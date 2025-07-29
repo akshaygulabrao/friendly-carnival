@@ -24,7 +24,7 @@ int main() {
         return 1;
     }
 
-    const int threads = static_cast<int>(std::thread::hardware_concurrency()*2*2*2);
+    const int threads = static_cast<int>(std::thread::hardware_concurrency()*2*2*2*2*2);
     std::cout << "Spawning " << threads << " senders\n";
     std::cout << "Targeting IPv4: " << ip_v4 << ":" << port << "\n";
     std::cout << "Targeting IPv6: " << ip_v6 << ":" << port << "\n";
